@@ -24,9 +24,9 @@ refresh() {
     # _icons='';_music='';_wifi='';_cpu='';_mem='';_date='';_vol='';_bat=''# 重置所有模块的状态为空
     # source $tempfile                                                     # 从 temp 文件中读取模块的状态
     # xsetroot -name "$_icons$_music$_wifi$_cpu$_mem$_date$_vol$_bat"      # 更新状态栏
-    _icons='';_date='';_bat=''
+    _icons='';_vol='';_date='';_bat=''
     source $tempfile                                                     # 从 temp 文件中读取模块的状态
-    xsetroot -name "$_icons$_date$_bat"      # 更新状态栏
+    xsetroot -name "$_icons$_vol$_date$_bat"      # 更新状态栏
 }
 
 # 启动定时更新状态栏 不同的模块有不同的刷新周期 注意不要重复启动该func
@@ -41,9 +41,10 @@ cron() {
         # [ $((i % 5)) -eq 0 ]   && to=(${to[@]} date music)               # 每 5秒   更新 date
         # [ $i -lt 30 ] && to=(wifi cpu mem date vol icons bat)            # 前 30秒  更新所有模块
         # [ $((i % 5)) -eq 0 ]   && to=(${to[@]} date)               # 每 5秒   更新 date
+        [ $((i % 20)) -eq 0 ]  && to=(${to[@]} vol icons)
         [ $((i % 5)) -eq 0 ] && to=(${to[@]} bat)
         [ $((i % 1)) -eq 0 ]   && to=(${to[@]} date)
-        [ $i -lt 30 ] && to=(date icons bat)
+        [ $i -lt 30 ] && to=(date vol icons bat)
         update ${to[@]}                                                  # 将需要更新的模块传递给 update
         sleep 1; let i+=5
     done &
@@ -56,6 +57,6 @@ cron() {
 case $1 in
     cron) cron ;;
     update) shift 1; update $* ;;
-    updateall|check) update icons date bat;;
+    updateall|check) update icons vol date bat;;
     *) click $1 $2 ;; # 接收clickstatusbar传递过来的信号 $1: 模块名  $2: 按键(L|M|R|U|D)
 esac
