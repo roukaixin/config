@@ -14,7 +14,7 @@ get_by_acpi() {
     bat_text=$(acpi -b | sed '2,$d' | awk '{print $4}' | grep -Eo "[0-9]+")
     [ ! "$bat_text" ] && bat_text=$(acpi -b | sed '2,$d' | awk -F'[ %]' '{print $5}' | grep -Eo "[0-9]+")
     [ ! "$(acpi -b | grep 'Battery 0' | grep Discharging)" ] && 
-    [ -n "$(acpi -a | grep on-line)" ] && charge_icon=" "
+    [ -n "$(acpi -a | grep on-line)" ]
     _time="可用时间: $(acpi | sed 's/^Battery 0: //g' | awk -F ',' '{print $3}' | sed 's/^[ ]//g' | awk '{print $1}')"
     [ "$_time" = "可用时间: " ] && _time=""
 }
@@ -24,7 +24,6 @@ get_by_upower() {
     [ ! "$(command -v upower)" ] && echo command not found: upower && return
     bat=$(upower -e | grep BAT)
     bat_text=$(upower -i $bat | awk '/percentage/ {print $2}' | grep -Eo '[0-9]+')
-    [ -n "$(upower -i $bat | grep 'state:.*fully-charged')" ] && charge_icon=" "
     bat_fully="$(upower -i $bat | grep 'state:.*fully-charged')"
 }
 
