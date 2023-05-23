@@ -24,7 +24,6 @@ get_by_upower() {
     [ ! "$(command -v upower)" ] && echo command not found: upower && return
     bat=$(upower -e | grep BAT)
     bat_text=$(upower -i $bat | awk '/percentage/ {print $2}' | grep -Eo '[0-9]+')
-    bat_fully="$(upower -i $bat | grep 'state:.*fully-charged')"
 }
 
 update() {
@@ -32,7 +31,7 @@ update() {
     get_by_upower
     [ -z $bat_text ] && bat_text=0
     bat=$(upower -e | grep BAT)
-    if [ -n "$bat_fully" ]; then
+    if [ -n "$(upower -i $bat | grep 'state:.*fully-charged')" ]; then
         if   [ "$bat_text" -ge 95 ]; then bat_icon="󰂅";
         elif [ "$bat_text" -ge 90 ]; then bat_icon="󰂋";
         elif [ "$bat_text" -ge 80 ]; then bat_icon="󰂊";
