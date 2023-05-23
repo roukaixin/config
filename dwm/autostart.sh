@@ -1,14 +1,22 @@
 #! /bin/bash
 
-#while true;
-#do
-#	feh --bg-fill --randomize --no-fehbg ~/wm/wallpaper/*.png
-#	sleep 6m
-#done &
 
 
-feh --bg-fill --randomize --no-fehbg ~/wm/wallpaper/01.png &
+daemons() {
+  sh /home/tnt/wm/config/dwm/statusbar/statusbar.sh cron &
+	fcitx5 &
+	flameshot &
+	# dunst &
+	picom --config ~/wm/config/picom/picom.conf &
+}
 
-fcitx5 &
+cron() {
+	while true;
+	do
+		feh --bg-fill --randomize --no-fehbg ~/wm/wallpaper/*.png
+		sleep 300
+	done &
+}
 
-# dunst &
+daemons 3 &
+cron 5 &
