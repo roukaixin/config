@@ -30,8 +30,8 @@ update() {
     get_by_acpi
     get_by_upower
     [ -z $bat_text ] && bat_text=0
-    bat=$(upower -e | grep BAT)
-    if [ -n "$(upower -i $bat | grep 'state:.*fully-charged')" ]; then
+
+    if [ ! "$(acpi -b | grep 'Battery 0' | grep Discharging)" ]; then
         if   [ "$bat_text" -ge 95 ]; then bat_icon="󰂅";
         elif [ "$bat_text" -ge 90 ]; then bat_icon="󰂋";
         elif [ "$bat_text" -ge 80 ]; then bat_icon="󰂊";
