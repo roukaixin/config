@@ -31,19 +31,11 @@ refresh() {
 
 # 启动定时更新状态栏 不同的模块有不同的刷新周期 注意不要重复启动该func
 cron() {
-    echo > $tempfile                                                     # 清空 temp 文件
-
+    echo > $tempfile   # 清空 temp 文件
     # 一秒更新
     while true; do
-      update date bat cpu mem
-      sleep 1;
+      update date bat cpu mem vol icons
     done &
-    # 五秒更新
-    while true; do
-      update vol icons
-      sleep 5;
-    done &
-    # 二十秒更新
 }
 
 # cron 启动定时更新状态栏
