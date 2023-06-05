@@ -34,7 +34,7 @@ update() {
 notify() {
     _cal=$(cal --color=always | sed 1,2d | sed 's/..7m/<b><span color="#ff79c6">/;s/..27m/<\/span><\/b>/' )
     _todo=$(cat ~/.todo.md | sed 's/\(- \[x\] \)\(.*\)/<span color="#ff79c6">\1<s>\2<\/s><\/span>/' | sed 's/- \[[ |x]\] //')
-    notify-send "  Calendar" "\n$_cal\n————————————————————\n$_todo" -r 9527
+    notify-send "  Calendar" "\n$_cal\n————————————————————\n$_todo" -r 9527
 }
 
 call_todo() {
@@ -42,7 +42,7 @@ call_todo() {
     pid2=`ps aux | grep 'st -t statusutil_todo' | grep -v grep | awk '{print $2}'`
     mx=`xdotool getmouselocation --shell | grep X= | sed 's/X=//'`
     my=`xdotool getmouselocation --shell | grep Y= | sed 's/Y=//'`
-    kill $pid1 && kill $pid2 || st -t statusutil_todo -g 50x15+$((mx - 200))+$((my + 20)) -c FGN -e nvim ~/.todo.md 
+    kill $pid1 && kill $pid2 || st -t statusutil_todo -g 50x15+$((mx - 200))+$((my + 20)) -c FGN -e vim ~/.todo.md
 }
 
 click() {

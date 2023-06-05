@@ -48,16 +48,16 @@ update() {
 
 notify() {
     update
-    notify-send -r 9527 -h int:value:$vol_text -h string:hlcolor:#dddddd "$vol_icon Volume"
+    notify-send -r 9527 -h int:value:$vol_text -h string:hlcolor:#dddddd "$vol_icon 音量"
 }
 
 click() {
     case "$1" in
-        L) notify                                           ;; # 仅通知
-        M) pactl set-sink-mute @DEFAULT_SINK@ toggle        ;; # 切换静音
-        R) killall pavucontrol || pavucontrol --class=FGN & ;; # 打开pavucontrol
-        U) pactl set-sink-volume @DEFAULT_SINK@ +5%; notify ;; # 音量加
-        D) pactl set-sink-volume @DEFAULT_SINK@ -5%; notify ;; # 音量减
+        L) notify                                           ;; # 仅通知  左击
+        M) pactl set-sink-mute @DEFAULT_SINK@ toggle        ;; # 切换静音 滚轮按键
+        R) killall pavucontrol || pavucontrol --class=FGN & ;; # 打开pavucontrol 右击
+        U) pactl set-sink-volume @DEFAULT_SINK@ +5%; notify ;; # 音量加  滚轮向上滚
+        D) pactl set-sink-volume @DEFAULT_SINK@ -5%; notify ;; # 音量减  滚轮向下滚
     esac
 }
 

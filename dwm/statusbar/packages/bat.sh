@@ -68,7 +68,7 @@ update() {
 
 notify() {
     update
-    notify-send "$bat_icon Battery" "\n剩余: $bat_text%\n$_time" -r 9527
+    notify-send "$bat_icon 电池电量" "\n剩余: $bat_text%\n$_time" -r 9527
 }
 
 click() {
