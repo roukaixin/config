@@ -9,8 +9,6 @@ signal=$(echo "^s$this^" | sed 's/_//')
 
 update() {
     icons=("󰣇")
-    # with_v2raya
-    # with_bluetooth
 
     text=" ${icons[@]} "
 
@@ -19,7 +17,7 @@ update() {
 }
 
 call_menu() {
-    case $(echo -e ' 关机\n 重启\n 休眠\n 锁定' | rofi -dmenu -window-title power) in
+    case $(echo -e ' 关机\n 重启\n󰂠 休眠\n 锁定' | rofi -dmenu -window-title power) in
         " 关机") poweroff ;;
         " 重启") reboot ;;
         " 休眠") systemctl hibernate ;;
