@@ -35,6 +35,7 @@ cron() {
     # 一秒更新
     while true; do
       update date bat cpu mem vol icons
+      sleep 0.1
     done &
 }
 

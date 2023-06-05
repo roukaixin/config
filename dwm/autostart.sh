@@ -3,7 +3,7 @@
 
 
 daemons() {
-  sh /home/tnt/wm/config/dwm/statusbar/statusbar.sh cron &
+  sh ~/wm/config/dwm/statusbar/statusbar.sh cron &
 	fcitx5 &
 	flameshot &
 	dunst -conf ~/wm/config/dunst/dunst.conf &
