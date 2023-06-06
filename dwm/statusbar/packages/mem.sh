@@ -31,7 +31,7 @@ notify() {
 用量:\t $(echo "$free_result" | sed -n 2p | awk '{print $3}')/$(echo "$free_result" | sed -n 2p | awk '{print $2}')
 swap:\t $(echo "$free_result" | sed -n 3p | awk '{print $3}')/$(echo "$free_result" | sed -n 3p | awk '{print $2}')
 "
-    notify-send "󰘚 Memory" "$text" -r 9527
+    dunstify "󰘚 Memory" "$text" -r 9527
 }
 
 call_btop() {

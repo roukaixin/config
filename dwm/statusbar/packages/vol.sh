@@ -48,7 +48,7 @@ update() {
 
 notify() {
     update
-    notify-send -r 9527 -h int:value:$vol_text -h string:hlcolor:#dddddd "$vol_icon 音量"
+    dunstify -r 9527 -h int:value:$vol_text -h string:hlcolor:#dddddd "$vol_icon 音量"
 }
 
 click() {

@@ -36,7 +36,7 @@ update() {
 
 notify() {
     update
-    notify-send -r 9527 "$wifi_icon Wifi" "\n$wifi_text"
+    dunstify -r 9527 "$wifi_icon Wifi" "\n$wifi_text"
 }
 
 call_nm() {
