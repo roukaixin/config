@@ -8,6 +8,7 @@ daemons() {
   flameshot &
   dunst -conf "$HOME"/wm/config/dunst/dunst.conf &
   picom --config "$HOME"/wm/config/picom/picom.conf &
+  nm-applet &
 }
 
 cron() {
