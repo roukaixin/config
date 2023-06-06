@@ -3,17 +3,17 @@
 
 
 daemons() {
-  sh ~/wm/config/dwm/statusbar/statusbar.sh cron &
-	fcitx5 &
-	flameshot &
-	dunst -conf ~/wm/config/dunst/dunst.conf &
-	picom --config ~/wm/config/picom/picom.conf &
+  sh $HOME/wm/config/dwm/statusbar/statusbar.sh cron &
+  fcitx5 &
+  flameshot &
+  dunst -conf $HOME/wm/config/dunst/dunst.conf &
+  picom --config $HOME/wm/config/picom/picom.conf &
 }
 
 cron() {
 	while true;
 	do
-		feh --bg-fill --randomize --no-fehbg ~/wm/wallpaper/*.png
+		feh --bg-fill --randomize --no-fehbg $HOME/wm/wallpaper/*.png
 		sleep 300
 	done &
 }
