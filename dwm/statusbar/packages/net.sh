@@ -1,6 +1,7 @@
 #! /bin/bash
 
-tempfile=$(cd $(dirname $0);cd ../;pwd)/temp
+# shellcheck disable=SC2046
+temp_file=$(cd $(dirname $0) || exit;cd ..;pwd)/temp
 
 this=_net
 icon_color="^c#000080^^b#3870560x88^"
@@ -11,43 +12,45 @@ signal=$(echo "^s$this^" | sed 's/_//')
 [ ! "$(command -v nmcli)" ] && echo command not found: nmcli && exit
 
 # 中英文适配
-if [ "$LANG" != "zh_CN.UTF-8" ];
-then
-  wifi_grep_keyword="connected to"
-  wifi_disconnected="disconnected"
-  wifi_disconnected_notify="disconnected"
-  wifi_delimiter=":  "
-  internet_name="Internet"
-else
-  wifi_grep_keyword="已连接 到"
-  wifi_disconnected="未连接"
-  wifi_disconnected_notify="未连接到网络"
-  wifi_delimiter="： "
-  internet_name="以太网"
-fi
+case "$LANG" in
+  "zh_CN.UTF-8")
+  net_grep_keyword="已连接 到"
+  net_disconnected="未连接"
+  net_disconnected_notify="未连接到网络"
+  net_delimiter="： "
+  net_name="以太网"
+  ;;
+  "en_US.UTF-8")
+  net_grep_keyword="connected to"
+  net_disconnected="disconnected"
+  net_disconnected_notify="disconnected"
+  net_delimiter=":  "
+  net_name="Internet"
+  ;;
+esac
 
 update() {
   # 取两位
-  connection_method=$(nmcli | grep "$wifi_grep_keyword" | sed "s/$wifi_grep_keyword//" | awk -F "$wifi_delimiter" '{print $1}' | awk -F '' '{print $1$2}')
+  connection_method=$(nmcli | grep "$net_grep_keyword" | sed "s/$net_grep_keyword//" | awk -F "$net_delimiter" '{print $1}' | awk -F '' '{print $1$2}')
   if [ "$connection_method" == "en" ]; then
     net_icon="󰈀"
-    connection_name=$internet_name
+    connection_name=$net_name
   elif [ "$connection_method" == "wl" ]; then
     net_icon="󰤨"
     connection_name="Wifi"
   else
-    connection_name=$wifi_disconnected_notify
+    connection_name=$net_disconnected_notify
   fi
 
-  net_text=$(nmcli | grep "$wifi_grep_keyword" | sed "s/$wifi_grep_keyword//" | awk -F "$wifi_delimiter" '{print $2}' | paste -d " " -s)
+  net_text=$(nmcli | grep "$net_grep_keyword" | sed "s/$net_grep_keyword//" | awk -F "$net_delimiter" '{print $2}' | paste -d " " -s)
   # 未连接状态 图标：web
-  [ "$net_text" = "" ] && net_text=$wifi_disconnected && net_icon="󰕑"
+  [ "$net_text" = "" ] && net_text=$net_disconnected && net_icon="󰕑"
 
   icon=" $net_icon "
   text=" $net_text "
 
-  sed -i '/^export '$this'=.*$/d' $tempfile
-  printf "export %s='%s%s%s%s%s'\n" $this "$signal" "$icon_color" "$icon" "$text_color" "$text" >> $tempfile
+  sed -i '/^export '$this'=.*$/d' "$temp_file"
+  printf "export %s='%s%s%s%s%s'\n" $this "$signal" "$icon_color" "$icon" "$text_color" "$text" >> "$temp_file"
 }
 
 notify() {
@@ -56,11 +59,18 @@ notify() {
 }
 
 call_nm() {
-    pid1=`ps aux | grep 'st -t statusutil' | grep -v grep | awk '{print $2}'`
-    pid2=`ps aux | grep 'st -t statusutil_nm' | grep -v grep | awk '{print $2}'`
-    mx=`xdotool getmouselocation --shell | grep X= | sed 's/X=//'`
-    my=`xdotool getmouselocation --shell | grep Y= | sed 's/Y=//'`
-    kill $pid1 && kill $pid2 || st -t statusutil_nm -g 60x25+$((mx - 240))+$((my + 20)) -c FGN -C "#222D31@4" -e 'nmtui-connect'
+    pid1=$(pgrep -f 'st -t status_util')
+    pid2=$(pgrep -f 'st -t status_util_nm')
+    mx=$(xdotool getmouselocation --shell | grep X= | sed 's/X=//')
+    my=$(xdotool getmouselocation --shell | grep Y= | sed 's/Y=//')
+    if [ "$pid2" ]; then
+        kill "$pid2"
+    else
+        if [ "$pid1" ]; then
+            kill "$pid1"
+        fi
+        st -t status_util_nm -g 60x25+$((mx - 240))+$((my + 20)) -c FGN -e 'nmtui-connect'
+    fi
 }
 
 click() {
@@ -71,7 +81,7 @@ click() {
 }
 
 case "$1" in
-    click) click $2 ;;
+    click) click "$2" ;;
     notify) notify ;;
     *) update ;;
 esac
