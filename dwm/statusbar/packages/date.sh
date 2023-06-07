@@ -54,10 +54,12 @@ call_todo() {
     pid2=$(pgrep -f 'st -t status_util_todo')
     mx=$(xdotool getmouselocation --shell | grep X= | sed 's/X=//')
     my=$(xdotool getmouselocation --shell | grep Y= | sed 's/Y=//')
-    if [ "$pid1" ]; then
-      kill "$pid1"
+    if [ "$pid2" ]; then
       kill "$pid2"
     else
+      if [ "$pid1" ]; then
+          kill "$pid1"
+      fi
       st -t status_util_todo -g 50x15+$((mx - 200))+$((my + 20)) -c FGN -e vim ~/.todo.md
     fi
 }
