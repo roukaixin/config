@@ -24,7 +24,9 @@ update() {
     icon=" $cpu_icon "
     text=" $cpu_text "
 
-    with_temp    sed -i '/^export '$this'=.*$/d' "$temp_file"
+    with_temp
+
+    sed -i '/^export '$this'=.*$/d' "$temp_file"
     printf "export %s='%s%s%s%s%s'\n" $this "$signal" "$icon_color" "$icon" "$text_color" "$text" >> "$temp_file"
 }
 

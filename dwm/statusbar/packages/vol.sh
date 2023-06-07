@@ -51,13 +51,32 @@ notify() {
     dunstify -r 9527 -h int:value:$vol_text -h string:hlcolor:#dddddd "$vol_icon 音量"
 }
 
+call_vol_control() {
+    pid1=$(pgrep -f 'st -t status_util')
+    pid2=$(pgrep -f 'st -t status_util_vol')
+    if [ "$pid2" ]; then
+        kill "$pid2"
+    else
+        if [ "$pid1" ]; then
+            kill "$pid1"
+        fi
+        st -t status_util_vol -c FGN -e 'pavucontrol'
+    fi
+#    killall pavucontrol || pavucontrol --class=FGN &
+}
+
 click() {
     case "$1" in
-        L) notify                                           ;; # 仅通知  左击
-        M) pactl set-sink-mute @DEFAULT_SINK@ toggle        ;; # 切换静音 滚轮按键
-        R) killall pavucontrol || pavucontrol --class=FGN & ;; # 打开pavucontrol 右击
-        U) pactl set-sink-volume @DEFAULT_SINK@ +5%; notify ;; # 音量加  滚轮向上滚
-        D) pactl set-sink-volume @DEFAULT_SINK@ -5%; notify ;; # 音量减  滚轮向下滚
+        # 仅通知  左击
+        L) notify                                           ;;
+        # 切换静音 滚轮按键
+        M) pactl set-sink-mute @DEFAULT_SINK@ toggle        ;;
+        # 打开pavucontrol 右击
+        R) call_vol_control ;;
+        # 音量加  滚轮向上滚
+        U) pactl set-sink-volume @DEFAULT_SINK@ +5%; notify ;;
+        # 音量减  滚轮向下滚
+        D) pactl set-sink-volume @DEFAULT_SINK@ -5%; notify ;;
     esac
 }
 
