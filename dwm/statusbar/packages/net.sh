@@ -1,6 +1,6 @@
 #! /bin/bash
 
-tempfile=$(cd $(dirname $0);cd ..;pwd)/temp
+tempfile=$(cd $(dirname $0);cd ../;pwd)/temp
 
 this=_net
 icon_color="^c#000080^^b#3870560x88^"
@@ -25,23 +25,27 @@ else
 fi
 
 update() {
-    wifi_icon="󰤨"
-    ethernet_icon="󰈀"
-    net_icon=$wifi_icon
-    net_text=$(nmcli | grep "$wifi_grep_keyword" | sed "s/$wifi_grep_keyword//" | awk -F "$wifi_delimiter" '{print $2}' | paste -d " " -s)
-    wifi_text=$(nmcli | grep "$wifi_grep_keyword" | sed "s/$wifi_grep_keyword//" | awk '{print $2}' | paste -d " " -s)
-    [ "$wifi_text" = "" ] && wifi_text=$wifi_disconnected
+  # 取两位
+  connection_method=$(nmcli | grep "$wifi_grep_keyword" | sed "s/$wifi_grep_keyword//" | awk -F ":  " '{print $1}' | awk -F '' '{print $1$2}')
+  if [ "$connection_method" == "en" ]; then
+    net_icon="󰈀"
+  else
+    net_icon="󰤨"
+  fi
 
-    icon=" $net_icon "
-    text=" $net_text "
+  net_text=$(nmcli | grep "$wifi_grep_keyword" | sed "s/$wifi_grep_keyword//" | awk -F "$wifi_delimiter" '{print $2}' | paste -d " " -s)
+  [ "$net_text" = "" ] && net_text=$wifi_disconnected
 
-    sed -i '/^export '$this'=.*$/d' $tempfile
-    printf "export %s='%s%s%s%s%s'\n" $this "$signal" "$icon_color" "$icon" "$text_color" "$text" >> $tempfile
+  icon=" $net_icon "
+  text=" $net_text "
+
+  sed -i '/^export '$this'=.*$/d' $tempfile
+  printf "export %s='%s%s%s%s%s'\n" $this "$signal" "$icon_color" "$icon" "$text_color" "$text" >> $tempfile
 }
 
 notify() {
     update
-    dunstify -r 9527 "$wifi_icon Wifi" "\n$wifi_text"
+    dunstify -r 9527 "$net_icon Wifi" "\n$net_text"
 }
 
 call_nm() {
