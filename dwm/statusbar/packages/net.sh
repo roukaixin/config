@@ -28,16 +28,19 @@ fi
 
 update() {
   # 取两位
-  connection_method=$(nmcli | grep "$wifi_grep_keyword" | sed "s/$wifi_grep_keyword//" | awk -F ":  " '{print $1}' | awk -F '' '{print $1$2}')
+  connection_method=$(nmcli | grep "$wifi_grep_keyword" | sed "s/$wifi_grep_keyword//" | awk -F "$wifi_delimiter" '{print $1}' | awk -F '' '{print $1$2}')
   if [ "$connection_method" == "en" ]; then
     net_icon="󰈀"
     connection_name=$internet_name
-  else
+  elif [ "$connection_method" == "wl" ]; then
     net_icon="󰤨"
     connection_name="Wifi"
+  else
+    connection_name=$wifi_disconnected_notify
   fi
 
   net_text=$(nmcli | grep "$wifi_grep_keyword" | sed "s/$wifi_grep_keyword//" | awk -F "$wifi_delimiter" '{print $2}' | paste -d " " -s)
+  # 未连接状态 图标：web
   [ "$net_text" = "" ] && net_text=$wifi_disconnected && net_icon="󰕑"
 
   icon=" $net_icon "
