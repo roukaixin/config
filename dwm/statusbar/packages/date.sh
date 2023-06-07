@@ -1,7 +1,7 @@
 #! /bin/bash
 # DATE 获取日期和时间的脚本
 # shellcheck disable=SC2046
-temp_file=$(cd $(dirname "$0") || exit;cd ../;pwd)/temp
+temp_file=$(cd $(dirname "$0") || exit;cd ..;pwd)/temp
 
 this=_date
 icon_color="^c#4B005B^^b#7E51680x88^"
@@ -55,7 +55,7 @@ call_todo() {
     mx=$(xdotool getmouselocation --shell | grep X= | sed 's/X=//')
     my=$(xdotool getmouselocation --shell | grep Y= | sed 's/Y=//')
     if [ "$pid2" ]; then
-      kill "$pid2"
+        kill "$pid2"
     else
       if [ "$pid1" ]; then
           kill "$pid1"

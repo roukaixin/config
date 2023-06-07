@@ -1,7 +1,8 @@
 #! /bin/bash
 # CPU 获取CPU使用率和温度的脚本
 
-tempfile=$(cd $(dirname $0);cd ..;pwd)/temp
+# shellcheck disable=SC2046
+temp_file=$(cd $(dirname "$0") || exit;cd ..;pwd)/temp
 
 this=_cpu
 icon_color="^c#3E206F^^b#6E51760x88^"
@@ -23,36 +24,41 @@ update() {
     icon=" $cpu_icon "
     text=" $cpu_text "
 
-    with_temp
-
-    sed -i '/^export '$this'=.*$/d' $tempfile
-    printf "export %s='%s%s%s%s%s'\n" $this "$signal" "$icon_color" "$icon" "$text_color" "$text" >> $tempfile
+    with_temp    sed -i '/^export '$this'=.*$/d' "$temp_file"
+    printf "export %s='%s%s%s%s%s'\n" $this "$signal" "$icon_color" "$icon" "$text_color" "$text" >> "$temp_file"
 }
 
 notify() {
     dunstify "󰻠 CPU tops" "\n$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)\\n\\n(100% per core)" -r 9527
 }
 
-call_btop() {
-    pid1=`ps aux | grep 'st -t statusutil' | grep -v grep | awk '{print $2}'`
-    pid2=`ps aux | grep 'st -t statusutil_cpu' | grep -v grep | awk '{print $2}'`
-    mx=`xdotool getmouselocation --shell | grep X= | sed 's/X=//'`
-    my=`xdotool getmouselocation --shell | grep Y= | sed 's/Y=//'`
-    kill $pid1 && kill $pid2 || st -t statusutil_cpu -g 82x25+$((mx - 328))+$((my + 20)) -c FGN -e btop
+call_b_top() {
+    pid1=$(pgrep -f 'st -t status_util')
+    pid2=$(pgrep -f 'st -t status_util_cpu')
+    mx=$(xdotool getmouselocation --shell | grep X= | sed 's/X=//')
+    my=$(xdotool getmouselocation --shell | grep Y= | sed 's/Y=//')
+    if [ "$pid2" ]; then
+        kill "$pid2"
+    else
+      if [ "$pid1" ]; then
+          kill "$pid1"
+      fi
+      st -t status_util_cpu -g 82x25+$((mx - 328))+$((my + 20)) -c FGN -e btop
+    fi
 }
 
 click() {
     case "$1" in
         L) notify ;;
         M) ;;
-        R) call_btop ;;
+        R) call_b_top ;;
         U) ;;
         D) ;;
     esac
 }
 
 case "$1" in
-    click) click $2 ;;
+    click) click "$2" ;;
     notify) notify ;;
     *) update ;;
 esac
