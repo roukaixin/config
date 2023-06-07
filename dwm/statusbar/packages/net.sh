@@ -38,7 +38,7 @@ update() {
   fi
 
   net_text=$(nmcli | grep "$wifi_grep_keyword" | sed "s/$wifi_grep_keyword//" | awk -F "$wifi_delimiter" '{print $2}' | paste -d " " -s)
-  [ "$net_text" = "" ] && net_text=$wifi_disconnected
+  [ "$net_text" = "" ] && net_text=$wifi_disconnected && net_icon="󰪎"
 
   icon=" $net_icon "
   text=" $net_text "
