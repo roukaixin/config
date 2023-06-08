@@ -2,36 +2,51 @@
 # 电池电量
 # 需要安装acpi或者upower
 
-tempfile=$(cd $(dirname $0);cd ..;pwd)/temp
+shell_path=$(dirname "$0")
+temp_file=$(cd "$shell_path" || exit;cd ..;pwd)/temp
 
 this=_bat
 icon_color="^c#3B001B^^b#4865660x88^"
 text_color="^c#3B001B^^b#4865660x99^"
 signal=$(echo "^s$this^" | sed 's/_//')
 
+# 中英文适配
+case "$LANG" in
+  "zh_CN.UTF-8")
+  bat_name="电池电量"
+  remaining="剩余"
+  available_time="可用时间"
+  ;;
+  "en_US.UTF-8")
+  bat_name="Battery"
+  remaining="remaining"
+  available_time="available time"
+  ;;
+esac
+
 get_by_acpi() {
     [ ! "$(command -v acpi)" ] && echo command not found: acpi && return
     bat_text=$(acpi -b | sed '2,$d' | awk '{print $4}' | grep -Eo "[0-9]+")
     [ ! "$bat_text" ] && bat_text=$(acpi -b | sed '2,$d' | awk -F'[ %]' '{print $5}' | grep -Eo "[0-9]+")
-    [ ! "$(acpi -b | grep 'Battery 0' | grep Discharging)" ] && 
-    [ -n "$(acpi -a | grep on-line)" ]
-    _time="可用时间: $(acpi | sed 's/^Battery 0: //g' | awk -F ',' '{print $3}' | sed 's/^[ ]//g' | awk '{print $1}')"
-    [ "$_time" = "可用时间: " ] && _time=""
+    ! acpi -b | grep 'Battery 0' | grep Discharging &&
+    acpi -a | grep -q on-line
+    _time="$available_time: $(acpi | sed 's/^Battery 0: //g' | awk -F ',' '{print $3}' | sed 's/^[ ]//g' | awk '{print $1}')"
+    [ "$_time" = "$available_time: " ] && _time=""
 }
 
 get_by_upower() {
-    [ -n "$bat_text" ] && [ $bat_text -gt 0 ] && return
+    [ -n "$bat_text" ] && [ "$bat_text" -gt 0 ] && return
     [ ! "$(command -v upower)" ] && echo command not found: upower && return
     bat=$(upower -e | grep BAT)
-    bat_text=$(upower -i $bat | awk '/percentage/ {print $2}' | grep -Eo '[0-9]+')
+    bat_text=$(upower -i "$bat" | awk '/percentage/ {print $2}' | grep -Eo '[0-9]+')
 }
 
 update() {
     get_by_acpi
     get_by_upower
-    [ -z $bat_text ] && bat_text=0
+    [ -z "$bat_text" ] && bat_text=0
 
-    if [ ! "$(acpi -b | grep 'Battery 0' | grep Discharging)" ]; then
+    if ! acpi -b | grep 'Battery 0' | grep Discharging ; then
         if   [ "$bat_text" -ge 95 ]; then bat_icon="󰂅";
         elif [ "$bat_text" -ge 90 ]; then bat_icon="󰂋";
         elif [ "$bat_text" -ge 80 ]; then bat_icon="󰂊";
@@ -62,24 +77,23 @@ update() {
     icon=" $bat_icon "
     text=" $bat_text% "
 
-    sed -i '/^export '$this'=.*$/d' $tempfile
-    printf "export %s='%s%s%s%s%s'\n" $this "$signal" "$icon_color" "$icon" "$text_color" "$text" >> $tempfile
+    sed -i '/^export '$this'=.*$/d' "$temp_file"
+    printf "export %s='%s%s%s%s%s'\n" $this "$signal" "$icon_color" "$icon" "$text_color" "$text" >> "$temp_file"
 }
 
 notify() {
     update
-    dunstify "$bat_icon 电池电量" "\n剩余: $bat_text%\n$_time" -r 9527
+    dunstify "$bat_icon $bat_name" "\n$remaining: $bat_text%\n$_time" -r 9527
 }
 
 click() {
     case "$1" in
         L) notify ;;
-        R) killall xfce4-power-manager-settings || xfce4-power-manager-settings & ;;
     esac
 }
 
 case "$1" in
-    click) click $2 ;;
+    click) click "$2" ;;
     notify) notify ;;
     *) update ;;
 esac
