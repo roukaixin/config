@@ -22,6 +22,16 @@ icon_color="^c#442266^^b#7879560x88^"
 text_color="^c#442266^^b#7879560x99^"
 signal=$(echo "^s$this^" | sed 's/_//')
 
+# 中英文适配
+case "$LANG" in
+  "zh_CN.UTF-8")
+  vol_name="音量"
+  ;;
+  "en_US.UTF-8")
+  vol_name="Volume"
+  ;;
+esac
+
 # check
 [ ! "$(command -v pactl)" ] && echo command not found: pactl && exit
 
@@ -55,7 +65,7 @@ update() {
 
 notify() {
     update
-    dunstify -r 9527 -h int:value:$vol_text -h string:hlcolor:#dddddd "$vol_icon 音量"
+    dunstify -r 9527 -h int:value:$vol_text -h string:hlcolor:#dddddd "$vol_icon $vol_name"
 }
 
 call_vol_control() {
@@ -77,7 +87,7 @@ click() {
         L) notify                                           ;;
         # 切换静音 滚轮按键
         M) pactl set-sink-mute @DEFAULT_SINK@ toggle        ;;
-        # 打开pavucontrol 右击
+        # 打开 pavucontrol 右击
         R) call_vol_control ;;
         # 音量加  滚轮向上滚
         U) pactl set-sink-volume @DEFAULT_SINK@ +5%; notify ;;
