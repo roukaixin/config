@@ -60,9 +60,8 @@ call_vol_control() {
         if [ "$pid1" ]; then
             kill "$pid1"
         fi
-        st -t status_util_vol -c N -e 'pavucontrol pavucontrol --class=FGN'
+        pavucontrol --name 'st -t status_util_vol'  --class=FGN
     fi
-#    killall pavucontrol || pavucontrol --class=FGN &
 }
 
 click() {
