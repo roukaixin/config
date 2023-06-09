@@ -6,7 +6,7 @@ daemons() {
   sh "$HOME"/wm/config/dwm/statusbar/statusbar.sh cron &
   fcitx5 &
   flameshot &
-  dunst -conf "$HOME"/wm/config/dunst/dunst.conf &
+  dunst -conf "$HOME"/wm/config/dunst/dunstrc &
   picom --config "$HOME"/wm/config/picom/picom.conf &
   nm-applet &
 }

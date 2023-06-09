@@ -335,18 +335,12 @@
     # where there are multiple screens with very different dpi values.
     per_monitor_dpi = false
 
-[shortcuts]
-    close = alt+space
-    close_all = ctrl+shift+space
-    history = ctrl+grave
-    context = ctrl+shift+period
-
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#FFFFFF"
-    foreground = "#335566"
+    background = "#335566"
+    foreground = "#FFFFFF"
     frame_color = "#335566"
     timeout = 5
     icon = null
@@ -354,8 +348,8 @@
     # default_icon = /path/to/icon
 
 [urgency_normal]
-    background = "#FFFFFF"
-    foreground = "#335566"
+    background = "#335566"
+    foreground = "#FFFFFF"
     frame_color = "#335566"
     timeout = 10
     icon = null
