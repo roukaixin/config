@@ -52,10 +52,7 @@ call_b_top() {
 click() {
     case "$1" in
         L) notify ;;
-        M) ;;
         R) call_b_top ;;
-        U) ;;
-        D) ;;
     esac
 }
 
