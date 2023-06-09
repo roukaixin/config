@@ -1,9 +1,10 @@
 # See dunst(5) for all configuration options
 
 [global]
-    ### Display ###
+    ### Display(展示) ###
 
     # Which monitor should the notifications be displayed on.
+    # 应在哪个监视器上显示通知。
     monitor = 0
 
     # Display notification on focused monitor.  Possible modes are:
@@ -17,9 +18,9 @@
     #
     # If this option is set to mouse or keyboard, the monitor option
     # will be ignored.
-    follow = none
+    follow = mouse
 
-    ### Geometry ###
+    ### Geometry(几何学) ###
 
     # dynamic width from 0 to 300
     # width = (0, 300)
@@ -27,13 +28,16 @@
     width = (0, 300)
 
     # The maximum height of a single notification, excluding the frame.
+    # 单个通知的最大高度，不包括框架。
     height = 300
 
     # Position the notification in the top right corner
+    # 将通知放在右上角
     origin = top-right
 
     # Offset from the origin
-    offset = 25x55
+    # 从原点偏移
+    offset = 6x36
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -48,7 +52,9 @@
     progress_bar = true
 
     # Set the progress bar height. This includes the frame, so make sure
+    # 设置进度条高度。这包括框架，因此请确保
     # it's at least twice as big as the frame width.
+    # 它至少是框架宽度的两倍
     progress_bar_height = 12
 
     # Set the frame width of the progress bar
@@ -61,13 +67,14 @@
     progress_bar_max_width = 300
 
     # Corner radius for the progress bar. 0 disables rounded corners.
+    # 通知圆角半径。 0 禁用圆角。
     progress_bar_corner_radius = 3
 
     # Corner radius for the icon image.
     icon_corner_radius = 0
 
-    # Show how many messages are currently hidden (because of
-    # notification_limit).
+    # Show how many messages are currently hidden (because of notification_limit).
+    # 显示当前隐藏了多少消息（因为 notification_limit）
     indicate_hidden = yes
 
     # The transparency of the window.  Range: [0; 100].
@@ -91,7 +98,9 @@
     text_icon_padding = 0
 
     # Defines width in pixels of frame around the notification window.
+    # 定义通知窗口周围框架的宽度（以像素为单位）。
     # Set to 0 to disable.
+    # 设置为 0 以禁用。
     frame_width = 3
 
     # Defines color of the frame around the notification window.
@@ -112,6 +121,7 @@
     separator_color = frame
 
     # Sort messages by urgency.
+    # 按紧急程度对消息进行排序。
     sort = yes
 
     # Don't remove messages, if the user is idle (no mouse or keyboard input)
@@ -119,14 +129,14 @@
     # Set to 0 to disable.
     # A client can set the 'transient' hint to bypass this. See the rules
     # section for how to disable this if necessary
-    # idle_threshold = 120
+    idle_threshold = 120
 
-    ### Text ###
+    ### Text(文本) ###
 
-    font = Monospace 8
+    font = JetBrainsMono Nerd Font 9.5
 
-    # The spacing between lines.  If the height is smaller than the
-    # font height, it will get raised to the font height.
+    # The spacing between lines.  If the height is smaller than the font height, it will get raised to the font height.
+    # 行与行之间的间距。如果高度小于字体高度，它将升高到字体高度。
     line_height = 0
 
     # Possible values are:
@@ -170,7 +180,9 @@
     alignment = left
 
     # Vertical alignment of message text and icon.
+    # 消息文本和图标的垂直对齐方式。
     # Possible values are "top", "center" and "bottom".
+    # 可能的值是“顶部”、“中心”和“底部”。
     vertical_alignment = center
 
     # Show age of message if message is older than show_age_threshold
@@ -179,22 +191,28 @@
     show_age_threshold = 60
 
     # Specify where to make an ellipsis in long lines.
+    # 指定在长行中制作省略号的位置。
     # Possible values are "start", "middle" and "end".
+    # 可能的值是“开始”、“中间”和“结束”。
     ellipsize = middle
 
     # Ignore newlines '\n' in notifications.
+    # 忽略通知中的换行符“\n”。
     ignore_newline = no
 
     # Stack together notifications with the same content
+    # 将具有相同内容的通知堆叠在一起
     stack_duplicates = true
 
     # Hide the count of stacked notifications with the same content
+    # 隐藏具有相同内容的堆叠通知的计数
     hide_duplicate_count = false
 
     # Display indicators for URLs (U) and actions (A).
+    # 显示 URL (U) 和操作 (A) 的指示符。
     show_indicators = yes
 
-    ### Icons ###
+    ### Icons(图标) ###
 
     # Recursive icon lookup. You can set a single theme, instead of having to
     # define all lookup paths.
@@ -206,6 +224,7 @@
     # icon_theme = "Adwaita, breeze"
 
     # Align icons left/right/top/off
+    # 左/右/上/下对齐图标
     icon_position = left
 
     # Scale small icons up to this size, set to 0 to disable. Helpful
@@ -214,23 +233,27 @@
     min_icon_size = 32
 
     # Scale larger icons down to this size, set to 0 to disable
-    max_icon_size = 128
+    # 将较大的图标缩小到这个大小，设置为 0 以禁用
+    max_icon_size = 32
 
     # Paths to default icons (only neccesary when not using recursive icon lookup)
+    # 默认图标的路径（仅在不使用递归图标查找时才需要）
     # icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
-    icon_path = /usr/share/icons/Adwaita/16x16/status/:/usr/share/icons/Adwaita/16x16/devices/:/usr/share/icons/Adwaita/16x16/legacy/
+    icon_path = /usr/share/icons/Adwaita/16x16/status/:/usr/share/icons/Adwaita/16x16/devices/:/usr/share/icons/Adwaita/16x16/apps/:/usr/share/icons/breeze-dark/status/16
 
-
-    ### History ###
+    ### History(历史记录) ###
 
     # Should a notification popped up from history be sticky or timeout
+    # 如果从历史弹出的通知是粘性的或超时的
     # as if it would normally do.
+    # 就像它通常会做的那样
     sticky_history = yes
 
     # Maximum amount of notifications kept in history
+    # 历史记录中保存的最大通知数量
     history_length = 20
 
-    ### Misc/Advanced ###
+    ### Misc(杂项)/Advanced(高级) ###
 
     # dmenu path.
     dmenu = /usr/bin/dmenu -p dunst:
@@ -239,6 +262,7 @@
     browser = /usr/bin/xdg-open
 
     # Always run rule-defined scripts, even if the notification is suppressed
+    # 始终运行规则定义的脚本，即使通知被抑制
     always_run_script = true
 
     # Define the title of the windows spawned by dunst
@@ -311,6 +335,12 @@
     # where there are multiple screens with very different dpi values.
     per_monitor_dpi = false
 
+[shortcuts]
+    close = alt+space
+    close_all = ctrl+shift+space
+    history = ctrl+grave
+    context = ctrl+shift+period
+
 
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
@@ -319,24 +349,27 @@
     foreground = "#335566"
     frame_color = "#335566"
     timeout = 5
+    icon = null
     # Icon for notifications with low urgency, uncomment to enable
-    #default_icon = /path/to/icon
+    # default_icon = /path/to/icon
 
 [urgency_normal]
     background = "#FFFFFF"
     foreground = "#335566"
     frame_color = "#335566"
     timeout = 10
+    icon = null
     # Icon for notifications with normal urgency, uncomment to enable
-    #default_icon = /path/to/icon
+    # default_icon = /path/to/icon
 
 [urgency_critical]
     background = "#d64e4e"
     foreground = "#f0e0e0"
     frame_color = "#d64e4e"
     timeout = 0
+    icon = null
     # Icon for notifications with critical urgency, uncomment to enable
-    #default_icon = /path/to/icon
+    # default_icon = /path/to/icon
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.
