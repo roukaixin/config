@@ -22,7 +22,7 @@ call_menu() {
         " 关机") poweroff ;;
         " 重启") reboot ;;
         " 休眠") systemctl hibernate ;;
-        " 锁定") ~/wm/config/lock/blurlock.sh ;;
+        " 锁定") sh ~/wm/config/lock/blurlock.sh ;;
     esac
 }
 
