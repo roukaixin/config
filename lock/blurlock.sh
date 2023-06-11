@@ -11,6 +11,7 @@
 # --redraw-thread : 启动一个单独的线程来重绘屏幕。从安全的角度来看可能更糟，但使条形指示器仍然发挥作用,当 PAM 进行身份验证时，通常会定期重绘。
 # --date-str : 日期格式
 # --{time, date, layout, verif, wrong, greeter}-size : 字体大小
+# --time-color : 颜色(rrggbbaa) aa透明度
 
 # -k, --clock, --force-clock : 显示时间
 
@@ -48,11 +49,11 @@ i3lock \
     --clock \
     --force-clock \
     --time-pos x+70:h-100 \
-    --time-color ffffffff \
+    --time-color bbbbbbff \
     --time-align 1 \
     --time-size 100 \
     --date-pos tx:ty+50 \
-    --date-color ffffffff \
+    --date-color bbbbbbff \
     --date-align 1 \
     --date-str "$date_format" \
     --date-size 30 \
