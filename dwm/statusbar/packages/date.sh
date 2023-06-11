@@ -1,7 +1,8 @@
 #! /bin/bash
 # DATE 获取日期和时间的脚本
-# shellcheck disable=SC2046
-temp_file=$(cd $(dirname "$0") || exit;cd ..;pwd)/temp
+
+shell_path=$(dirname "$0")
+temp_file=$(cd "$shell_path" || exit;cd ..;pwd)/temp
 
 this=_date
 icon_color="^c#4B005B^^b#7E51680x88^"

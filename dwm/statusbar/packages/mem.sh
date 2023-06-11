@@ -1,8 +1,8 @@
 #! /bin/bash
 # MEM
 
-# shellcheck disable=SC2046
-temp_file=$(cd $(dirname $0) || exit;cd ..;pwd)/temp
+shell_path=$(dirname "$0")
+temp_file=$(cd "$shell_path" || exit;cd ..;pwd)/temp
 
 this=_mem
 icon_color="^c#3B001B^^b#6873790x88^"

@@ -1,8 +1,8 @@
 #! /bin/bash
 # CPU 获取CPU使用率和温度的脚本
 
-# shellcheck disable=SC2046
-temp_file=$(cd $(dirname "$0") || exit;cd ..;pwd)/temp
+shell_path=$(dirname "$0")
+temp_file=$(cd "$shell_path" || exit;cd ..;pwd)/temp
 
 this=_cpu
 icon_color="^c#3E206F^^b#6E51760x88^"

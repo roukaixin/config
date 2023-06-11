@@ -14,8 +14,9 @@
 # 静音 -> Mute: no                                                                                 
 # 音量 -> Volume: front-left: 13183 /  20% / -41.79 dB,   front-right: 13183 /  20% / -41.79 dB
 
-# shellcheck disable=SC2046
-temp_file=$(cd $(dirname "$0") || exit;cd ..;pwd)/temp
+
+shell_path=$(dirname "$0")
+temp_file=$(cd "$shell_path" || exit;cd ..;pwd)/temp
 
 this=_vol
 icon_color="^c#442266^^b#7879560x88^"
