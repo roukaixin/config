@@ -16,11 +16,13 @@ case "$LANG" in
   bat_name="电池电量"
   remaining="剩余"
   available_time="可用时间"
+  bat_low="电池电量低，请充电"
   ;;
   "en_US.UTF-8")
   bat_name="Battery"
   remaining="remaining"
   available_time="available time"
+  bat_low="The battery is low, please charge it"
   ;;
 esac
 
@@ -47,29 +49,37 @@ update() {
     [ -z "$bat_text" ] && bat_text=0
 
     if ! acpi -b | grep 'Battery 0' | grep Discharging ; then
-        if   [ "$bat_text" -ge 95 ]; then bat_icon="󰂅";
-        elif [ "$bat_text" -ge 90 ]; then bat_icon="󰂋";
-        elif [ "$bat_text" -ge 80 ]; then bat_icon="󰂊";
-        elif [ "$bat_text" -ge 70 ]; then bat_icon="󰢞";
-        elif [ "$bat_text" -ge 60 ]; then bat_icon="󰂉";
-        elif [ "$bat_text" -ge 50 ]; then bat_icon="󰢝";
-        elif [ "$bat_text" -ge 40 ]; then bat_icon="󰂈";
-        elif [ "$bat_text" -ge 30 ]; then bat_icon="󰂇";
-        elif [ "$bat_text" -ge 20 ]; then bat_icon="󰂆";
-        elif [ "$bat_text" -ge 10 ]; then bat_icon="󰢜";
-        else bat_icon="󰢟"; fi
+      dunstctl history-rm 952810
+      if   [ "$bat_text" -ge 95 ]; then bat_icon="󰂅";
+      elif [ "$bat_text" -ge 90 ]; then bat_icon="󰂋";
+      elif [ "$bat_text" -ge 80 ]; then bat_icon="󰂊";
+      elif [ "$bat_text" -ge 70 ]; then bat_icon="󰢞";
+      elif [ "$bat_text" -ge 60 ]; then bat_icon="󰂉";
+      elif [ "$bat_text" -ge 50 ]; then bat_icon="󰢝";
+      elif [ "$bat_text" -ge 40 ]; then bat_icon="󰂈";
+      elif [ "$bat_text" -ge 30 ]; then bat_icon="󰂇";
+      elif [ "$bat_text" -ge 20 ]; then bat_icon="󰂆";
+      elif [ "$bat_text" -ge 10 ]; then bat_icon="󰢜";
+      else bat_icon="󰢟"; fi
     else
-        if   [ "$bat_text" -ge 95 ]; then bat_icon="󰁹";
-        elif [ "$bat_text" -ge 90 ]; then bat_icon="󰂂";
-        elif [ "$bat_text" -ge 80 ]; then bat_icon="󰂁";
-        elif [ "$bat_text" -ge 70 ]; then bat_icon="󰂀";
-        elif [ "$bat_text" -ge 60 ]; then bat_icon="󰁿";
-        elif [ "$bat_text" -ge 50 ]; then bat_icon="󰁾";
-        elif [ "$bat_text" -ge 40 ]; then bat_icon="󰁽";
-        elif [ "$bat_text" -ge 30 ]; then bat_icon="󰁼";
-        elif [ "$bat_text" -ge 20 ]; then bat_icon="󰁻";
-        elif [ "$bat_text" -ge 10 ]; then bat_icon="󰁺";
-        else bat_icon="󰂃"; fi
+      if   [ "$bat_text" -ge 95 ]; then bat_icon="󰁹";
+      elif [ "$bat_text" -ge 90 ]; then bat_icon="󰂂";
+      elif [ "$bat_text" -ge 80 ]; then bat_icon="󰂁";
+      elif [ "$bat_text" -ge 70 ]; then bat_icon="󰂀";
+      elif [ "$bat_text" -ge 60 ]; then bat_icon="󰁿";
+      elif [ "$bat_text" -ge 50 ]; then bat_icon="󰁾";
+      elif [ "$bat_text" -ge 40 ]; then bat_icon="󰁽";
+      elif [ "$bat_text" -ge 30 ]; then bat_icon="󰁼";
+      elif [ "$bat_text" -ge 20 ]; then bat_icon="󰁻";
+      elif [ "$bat_text" -ge 10 ];
+      then
+        bat_icon="󰁺";
+        # 需要点击通知信息才不会在发生信息
+        # && [ "$(dunstctl count displayed)" -eq 0 ]
+        if [ ! "$(dunstctl history | grep 952810)" ] ; then
+            notify_low 952810;
+        fi
+      else bat_icon="󰂃"; fi
     fi
 
 
@@ -84,6 +94,10 @@ update() {
 notify() {
     update
     dunstify "$bat_icon $bat_name" "\n$remaining: $bat_text%\n$_time" -r 9527
+}
+
+notify_low() {
+  dunstify "$bat_low" -r "$1"
 }
 
 click() {
