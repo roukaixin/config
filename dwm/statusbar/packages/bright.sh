@@ -7,8 +7,8 @@ shell_path=$(dirname "$0")
 temp_file=$(cd "$shell_path" || exit;cd ..;pwd)/temp
 
 this=_bright
-icon_color="^c#442266^^b#7879560x88^"
-text_color="^c#442266^^b#7879560x99^"
+icon_color="^c#3B102B^^b#6873790x88^"
+text_color="^c#3B102B^^b#6873790x99^"
 signal=$(echo "^s$this^" | sed 's/_//')
 
 
