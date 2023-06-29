@@ -22,15 +22,16 @@ click() {
 
 # 更新状态栏
 refresh() {
-    _icons='';_net='';_cpu='';_mem='';_vol='';_date='';_bat=''              # 重置所有模块的状态为空
+    _icons=;''_bright'';_net='';_cpu='';_mem='';_vol='';_date='';_bat=''            # 重置所有模块的状态为空
     # shellcheck source=$HOME/wm/config/dwm/statusbar/temp
-    source "$temp_file"                                                     # 从 temp 文件中读取模块的状态
-    xsetroot -name "$_icons$_net$_cpu$_mem$_vol$_date$_bat"                 # 更新状态栏
+    source "$temp_file"                                                             # 从 temp 文件中读取模块的状态
+    xsetroot -name "$_icons$_bright$_net$_cpu$_mem$_vol$_date$_bat"                 # 更新状态栏
 }
 
 # 启动定时更新状态栏 不同的模块有不同的刷新周期 注意不要重复启动该func
 cron() {
     echo > "$temp_file"   # 清空 temp 文件
+    update bright
     # 一秒更新
     while true; do
       update date bat cpu mem vol icons net
@@ -45,6 +46,6 @@ cron() {
 case $1 in
     cron) cron ;;
     update) shift 1; update "$@" ;;
-    updateall|check) update icons net cpu men vol date bat;;
+    updateall|check) update icons bright net cpu men vol date bat;;
     *) click "$1" "$2" ;;       # 接收 click statusbar 传递过来的信号 $1: 模块名  $2: 按键(L|M|R|U|D)
 esac
