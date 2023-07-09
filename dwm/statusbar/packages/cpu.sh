@@ -9,7 +9,7 @@ icon_color="^c#3E206F^^b#6E51760x88^"
 text_color="^c#3E206F^^b#6E51760x99^"
 signal=$(echo "^s$this^" | sed 's/_//')
 
-with_temp() {
+cpu_temp() {
     # check
     [ ! "$(command -v sensors)" ] && echo command not found: sensors && return
 
@@ -19,12 +19,17 @@ with_temp() {
 
 update() {
     cpu_icon="󰻠"
-    cpu_text=$(top -n 1 -b | sed -n '3p' | awk '{printf "%02d%", 100 - $8}')
+    # 第一个 cpu total
+    cpu_low_text=$(cat /proc/stat | grep cpu | sed -n '1p' | awk '{print $2 + $3 + $4 + $5 + $6 + $7 + $8}')
+    seelp 0.5
+    # 0.5 秒后的 cpu total
+    cpu_next_text=$(cat /proc/stat | grep cpu | sed -n '1p' | awk '{print $2 + $3 + $4 + $5 + $6 + $7 + $8}')
+    cpu_text=$(echo `expr $cpu_next_text \* 2 - $cpu_low_text \* 2` | awk '{printf "%02d%", $1}')
 
     icon=" $cpu_icon "
     text=" $cpu_text "
 
-    with_temp
+    cpu_temp
 
     sed -i '/^export '$this'=.*$/d' "$temp_file"
     printf "export %s='%s%s%s%s%s'\n" $this "$signal" "$icon_color" "$icon" "$text_color" "$text" >> "$temp_file"
