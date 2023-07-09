@@ -58,9 +58,9 @@ notify() {
     dunstify -r 9527 "$net_icon $connection_name" "\n$net_text"
 }
 
-call_nm() {
+call_net() {
     pid1=$(pgrep -f 'st -t status_util')
-    pid2=$(pgrep -f 'st -t status_util_nm')
+    pid2=$(pgrep -f 'st -t status_util_net')
     mx=$(xdotool getmouselocation --shell | grep X= | sed 's/X=//')
     my=$(xdotool getmouselocation --shell | grep Y= | sed 's/Y=//')
     if [ "$pid2" ]; then
@@ -69,14 +69,14 @@ call_nm() {
         if [ "$pid1" ]; then
             kill "$pid1"
         fi
-        st -t status_util_nm -g 60x25+$((mx - 240))+$((my + 20)) -c FGN -e 'nmtui-connect'
+        st -t status_util_net
     fi
 }
 
 click() {
     case "$1" in
         L) notify ;;
-        R) call_nm ;;
+        R) call_net ;;
     esac
 }
 
