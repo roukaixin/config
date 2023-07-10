@@ -82,15 +82,12 @@ notify() {
 call_net() {
     pid1=$(pgrep -f 'st -t status_util')
     pid2=$(pgrep -f 'st -t status_util_net')
-    mx=$(xdotool getmouselocation --shell | grep X= | sed 's/X=//')
-    my=$(xdotool getmouselocation --shell | grep Y= | sed 's/Y=//')
     if [ "$pid2" ]; then
         kill "$pid2"
     else
         if [ "$pid1" ]; then
             kill "$pid1"
         fi
-        st -t status_util_net
     fi
 }
 
