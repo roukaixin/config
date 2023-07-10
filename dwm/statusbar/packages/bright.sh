@@ -49,7 +49,7 @@ update() {
 
 notify() {
     update
-    dunstify -r 9527 -h int:value:$bright_text -h string:hlcolor:#dddddd "$bright_icon $bright_name"
+    dunstify -r 9527 -h int:value:"$bright_text" -h string:hlcolor:#dddddd "$bright_icon $bright_name"
 }
 
 
