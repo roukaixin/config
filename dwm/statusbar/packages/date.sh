@@ -61,7 +61,7 @@ call_todo() {
       if [ "$pid1" ]; then
           kill "$pid1"
       fi
-      st -t status_util_todo -g 50x15+$((mx - 200))+$((my + 20)) -c FGN -e vim ~/.todo.md
+      st -t status_util_todo -g 50x15+$((mx - 200))+$((my + 20)) -c FGN -e nvim ~/.todo.md
     fi
 }
 

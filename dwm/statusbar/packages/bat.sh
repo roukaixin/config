@@ -76,7 +76,7 @@ update() {
         bat_icon="󰁺";
         # 需要点击通知信息才不会在发生信息
         # && [ "$(dunstctl count displayed)" -eq 0 ]
-        if [ ! "$(dunstctl history | grep 952810)" ] ; then
+        if ! dunstctl history | grep 952810 ; then
             notify_low 952810;
         fi
       else bat_icon="󰂃"; fi

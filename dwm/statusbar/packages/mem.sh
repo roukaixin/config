@@ -21,10 +21,10 @@ esac
 
 update() {
 	mem_icon="󰘚"
-    mem_total=$(cat /proc/meminfo | grep "MemTotal:"| awk '{print $2}')
-    mem_free=$(cat /proc/meminfo | grep "MemFree:"| awk '{print $2}')
-    mem_buffers=$(cat /proc/meminfo | grep "Buffers:"| awk '{print $2}')
-    mem_cached=$(cat /proc/meminfo | grep -w "Cached:"| awk '{print $2}')
+    mem_total=$(< /proc/meminfo grep "MemTotal:"| awk '{print $2}')
+    mem_free=$(< /proc/meminfo grep "MemFree:"| awk '{print $2}')
+    mem_buffers=$(< /proc/meminfo grep "Buffers:"| awk '{print $2}')
+    mem_cached=$(< /proc/meminfo grep -w "Cached:"| awk '{print $2}')
     men_usage_rate=$(((mem_total - mem_free - mem_buffers - mem_cached) * 100 / mem_total))
     mem_text=$(echo $men_usage_rate | awk '{printf "%02d%", $1}')
 
@@ -46,8 +46,8 @@ swap:\t $(echo "$free_result" | sed -n 3p | awk '{print $3}')/$(echo "$free_resu
 }
 
 call_b_top() {
-    pid1=$(ps aux | grep 'st -t status_util' | grep -v grep | awk '{print $2}')
-    pid2=$(ps aux | grep 'st -t status_util_mem' | grep -v grep | awk '{print $2}')
+    pid1=$(pgrep -f 'st -t status_util')
+    pid2=$(pgrep -f 'st -t status_util_mem')
     mx=$(xdotool getmouselocation --shell | grep X= | sed 's/X=//')
     my=$(xdotool getmouselocation --shell | grep Y= | sed 's/Y=//')
     if [ "$pid2" ]; then
