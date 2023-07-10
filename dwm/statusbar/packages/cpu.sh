@@ -20,11 +20,12 @@ cpu_temp() {
 update() {
     cpu_icon="󰻠"
     # 第一个 cpu total
-    cpu_low_text=$(cat /proc/stat | grep cpu | sed -n '1p' | awk '{print $2 + $3 + $4 + $5 + $6 + $7 + $8}')
-    seelp 0.5
-    # 0.5 秒后的 cpu total
-    cpu_next_text=$(cat /proc/stat | grep cpu | sed -n '1p' | awk '{print $2 + $3 + $4 + $5 + $6 + $7 + $8}')
-    cpu_text=$(echo `expr $cpu_next_text \* 2 - $cpu_low_text \* 2` | awk '{printf "%02d%", $1}')
+    cpu_low_text=$(< /proc/stat grep cpu | sed -n '1p' | awk '{print $2 + $3 + $4 + $5 + $6 + $7 + $8}')
+    seelp 0.8
+    # 0.8 秒后的 cpu total
+    cpu_next_text=$(< /proc/stat grep cpu | sed -n '1p' | awk '{print $2 + $3 + $4 + $5 + $6 + $7 + $8}')
+
+    cpu_text=$(echo "$((cpu_next_text - cpu_low_text))" | awk '{printf "%02d%", $1/0.8}')
 
     icon=" $cpu_icon "
     text=" $cpu_text "
