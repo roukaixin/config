@@ -13,9 +13,13 @@ signal=$(echo "^s$this^" | sed 's/_//')
 case "$LANG" in
   "zh_CN.UTF-8")
   notify_theme="内存"
+  available="可用"
+  usage="用量"
   ;;
   "en_US.UTF-8")
   notify_theme="Memory"
+  available="available"
+  usage="Usage"
   ;;
 esac
 
@@ -38,8 +42,8 @@ update() {
 notify() {
     free_result=$(free -h)
     text="
-可用:\t $(echo "$free_result" | sed -n 2p | awk '{print $7}')
-用量:\t $(echo "$free_result" | sed -n 2p | awk '{print $3}')/$(echo "$free_result" | sed -n 2p | awk '{print $2}')
+$available:\t $(echo "$free_result" | sed -n 2p | awk '{print $7}')
+$usage:\t $(echo "$free_result" | sed -n 2p | awk '{print $3}')/$(echo "$free_result" | sed -n 2p | awk '{print $2}')
 swap:\t $(echo "$free_result" | sed -n 3p | awk '{print $3}')/$(echo "$free_result" | sed -n 3p | awk '{print $2}')
 "
     dunstify "󰘚 $notify_theme" "$text" -r 9527
