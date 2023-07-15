@@ -67,7 +67,6 @@ update() {
 
 notify() {
     update
-    echo "$notify_icon_en" >> ~/aa.text
     if [ "$notify_icon_en" ]; then
       dunstify -r 9526 "$notify_icon_en" "\n$net_text_en"
     fi
