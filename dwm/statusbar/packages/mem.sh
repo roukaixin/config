@@ -15,11 +15,13 @@ case "$LANG" in
   notify_theme="内存"
   available="可用"
   usage="用量"
+  swap="swap"
   ;;
   "en_US.UTF-8")
   notify_theme="Memory"
   available="available"
-  usage="Usage"
+  usage="Usage    "
+  swap="swap     "
   ;;
 esac
 
@@ -44,7 +46,7 @@ notify() {
     text="
 $available:\t $(echo "$free_result" | sed -n 2p | awk '{print $7}')
 $usage:\t $(echo "$free_result" | sed -n 2p | awk '{print $3}')/$(echo "$free_result" | sed -n 2p | awk '{print $2}')
-swap:\t $(echo "$free_result" | sed -n 3p | awk '{print $3}')/$(echo "$free_result" | sed -n 3p | awk '{print $2}')
+$swap:\t $(echo "$free_result" | sed -n 3p | awk '{print $3}')/$(echo "$free_result" | sed -n 3p | awk '{print $2}')
 "
     dunstify "󰘚 $notify_theme" "$text" -r 9527
 }
