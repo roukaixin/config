@@ -27,7 +27,7 @@ update() {
     # 获取更新后的 cpu 统计数据
     read -r new_cpu_user new_cpu_nice new_cpu_system new_cpu_idel new_cpu_iowait new_cpu_irq new_cpu_softirq new_cpu_steal new_cpu_guest new_cpu_guest_nice <<<"$(grep '^cpu' /proc/stat | awk '{print $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}')"
 
-    # 计算 cpu 是用来
+    # 计算 cpu 使用率
     total_prev=$((cpu_user + cpu_nice + cpu_system + cpu_idel + cpu_iowait + cpu_irq + cpu_softirq + cpu_steal + cpu_guest + cpu_guest_nice))
     total_now=$((new_cpu_user + new_cpu_nice + new_cpu_system + new_cpu_idel + new_cpu_iowait + new_cpu_irq + new_cpu_softirq + new_cpu_steal + new_cpu_guest + new_cpu_guest_nice))
     total_diff=$((total_now - total_prev))
