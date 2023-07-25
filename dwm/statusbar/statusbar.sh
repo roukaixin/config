@@ -22,21 +22,70 @@ click() {
 
 # 更新状态栏
 refresh() {
-    _icons=;''_bright'';_net='';_cpu='';_mem='';_vol='';_date='';_bat=''            # 重置所有模块的状态为空
+    _icons='';_bright='';_net='';_cpu='';_mem='';_vol='';_date='';_bat='';            # 重置所有模块的状态为空
     # shellcheck source=$HOME/wm/config/dwm/statusbar/temp
     source "$temp_file"                                                             # 从 temp 文件中读取模块的状态
     xsetroot -name "$_icons$_bright$_net$_cpu$_mem$_vol$_date$_bat"                 # 更新状态栏
 }
 
+icons_fun(){
+  while true; do
+    update icons
+    sleep 10800
+  done
+}
+
+net_fun(){
+  while true; do
+    update net
+    sleep 1
+  done
+}
+
+cpu_fun(){
+  while true; do
+    update cpu
+  done
+}
+
+mem_fun(){
+  while true; do
+    update mem
+    sleep 1
+  done
+}
+
+vol_fun(){
+  while true; do
+    update vol
+    sleep 1
+  done
+}
+
+date_fun(){
+  while true; do
+    update date
+    sleep 1
+  done
+}
+
+bat_fun(){
+  while true; do
+    update bat
+    sleep 3
+  done
+}
+
 # 启动定时更新状态栏 不同的模块有不同的刷新周期 注意不要重复启动该func
 cron() {
     echo > "$temp_file"   # 清空 temp 文件
-    update bright
-    # 一秒更新
-    while true; do
-      update date bat cpu mem vol icons net
-      sleep 1
-    done &
+    icons_fun &
+    net_fun &
+    cpu_fun &
+    mem_fun &
+    vol_fun &
+    date_fun &
+    bat_fun &
 }
 
 # cron 启动定时更新状态栏
