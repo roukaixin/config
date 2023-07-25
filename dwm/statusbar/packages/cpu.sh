@@ -19,13 +19,24 @@ cpu_temp() {
 
 update() {
     cpu_icon="󰻠"
-    # 第一个 cpu total
-    cpu_low_text=$(< /proc/stat grep cpu | sed -n '1p' | awk '{print $2 + $3 + $4 + $5 + $6 + $7 + $8}')
-    seelp 0.8
-    # 0.8 秒后的 cpu total
-    cpu_next_text=$(< /proc/stat grep cpu | sed -n '1p' | awk '{print $2 + $3 + $4 + $5 + $6 + $7 + $8}')
 
-    cpu_text=$(echo "$((cpu_next_text - cpu_low_text))" | awk '{printf "%02d%", $1/0.8}')
+    # 获取初始的 cpu 统计数据
+    read cpu_user cpu_nice cpu_system cpu_idel cpu_iowait cpu_irq cpu_softirq cpu_steal cpu_guest cpu_guest_nice <<<$(grep '^cpu' /proc/stat | awk '{print $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}')
+    # 等待 0.8 秒
+    sleep 0.8
+    # 获取更新后的 cpu 统计数据
+    read new_cpu_user new_cpu_nice new_cpu_system new_cpu_idel new_cpu_iowait new_cpu_irq new_cpu_softirq new_cpu_steal new_cpu_guest new_cpu_guest_nice <<<$(grep '^cpu' /proc/stat | awk '{print $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}')
+
+    # 计算 cpu 是用来
+    total_prev=$((cpu_user + cpu_nice + cpu_system + cpu_idel + cpu_iowait + cpu_irq + cpu_softirq + cpu_steal + cpu_guest + cpu_guest_nice))
+    total_now=$((new_cpu_user + new_cpu_nice + new_cpu_system + new_cpu_idel + new_cpu_iowait + new_cpu_irq + new_cpu_softirq + new_cpu_steal + new_cpu_guest + new_cpu_guest_nice))
+    total_diff=$((total_now - total_prev))
+
+    idle_prev=$cpu_idel
+    idle_now=$new_cpu_idel
+    idle_diff=$((idle_now - idle_prev))
+
+    cpu_text=$(echo $((100 * (total_diff - idle_diff) / total_diff)) | awk '{printf "%02d%", $1}')
 
     icon=" $cpu_icon "
     text=" $cpu_text "
