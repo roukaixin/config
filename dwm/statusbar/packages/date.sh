@@ -46,22 +46,18 @@ update() {
 
 notify() {
     _cal=$(cal --color=always | sed 1,2d | sed 's/..7m/<b><span color="#ff79c6">/;s/..0m/<\/span><\/b>/' )
-    _todo=$(< ~/.todo.md tr ' ' _ | sed 's/\(- \[x\] \)\(.*\)/<span color="#ff79c6">\1<s>\2<\/s><\/span>/' | sed 's/- \[[ |x]\] //')
-    dunstify "  $notify_theme" "\n$_cal\n————————————————————\n$_todo" -r 9527
+    dunstify "  $notify_theme" "\n$_cal" -r 9527
 }
 
 call_todo() {
     pid1=$(pgrep -f 'st -t status_util')
     pid2=$(pgrep -f 'st -t status_util_todo')
-    mx=$(xdotool getmouselocation --shell | grep X= | sed 's/X=//')
-    my=$(xdotool getmouselocation --shell | grep Y= | sed 's/Y=//')
     if [ "$pid2" ]; then
         kill "$pid2"
     else
       if [ "$pid1" ]; then
           kill "$pid1"
       fi
-      st -t status_util_todo -g 50x15+$((mx - 200))+$((my + 20)) -c FGN -e nvim ~/.todo.md
     fi
 }
 
