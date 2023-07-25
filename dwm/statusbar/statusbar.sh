@@ -31,7 +31,14 @@ refresh() {
 icons_fun(){
   while true; do
     update icons
-    sleep 10800
+    sleep 5 * 60 * 60
+  done
+}
+
+bright_fun(){
+  while true; do
+    update bright
+    sleep 5 * 60 * 60
   done
 }
 
@@ -80,6 +87,7 @@ bat_fun(){
 cron() {
     echo > "$temp_file"   # 清空 temp 文件
     icons_fun &
+    bright_fun &
     net_fun &
     cpu_fun &
     mem_fun &
