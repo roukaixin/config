@@ -21,11 +21,11 @@ update() {
     cpu_icon="󰻠"
 
     # 获取初始的 cpu 统计数据
-    read cpu_user cpu_nice cpu_system cpu_idel cpu_iowait cpu_irq cpu_softirq cpu_steal cpu_guest cpu_guest_nice <<<$(grep '^cpu' /proc/stat | awk '{print $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}')
+    read -r cpu_user cpu_nice cpu_system cpu_idel cpu_iowait cpu_irq cpu_softirq cpu_steal cpu_guest cpu_guest_nice <<<"$(grep '^cpu' /proc/stat | awk '{print $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}')"
     # 等待 0.8 秒
     sleep 0.8
     # 获取更新后的 cpu 统计数据
-    read new_cpu_user new_cpu_nice new_cpu_system new_cpu_idel new_cpu_iowait new_cpu_irq new_cpu_softirq new_cpu_steal new_cpu_guest new_cpu_guest_nice <<<$(grep '^cpu' /proc/stat | awk '{print $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}')
+    read -r new_cpu_user new_cpu_nice new_cpu_system new_cpu_idel new_cpu_iowait new_cpu_irq new_cpu_softirq new_cpu_steal new_cpu_guest new_cpu_guest_nice <<<"$(grep '^cpu' /proc/stat | awk '{print $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}')"
 
     # 计算 cpu 是用来
     total_prev=$((cpu_user + cpu_nice + cpu_system + cpu_idel + cpu_iowait + cpu_irq + cpu_softirq + cpu_steal + cpu_guest + cpu_guest_nice))
