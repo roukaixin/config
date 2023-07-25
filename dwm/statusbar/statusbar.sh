@@ -31,14 +31,14 @@ refresh() {
 icons_fun(){
   while true; do
     update icons
-    sleep 5 * 60 * 60
+    sleep 18000
   done
 }
 
 bright_fun(){
   while true; do
     update bright
-    sleep 5 * 60 * 60
+    sleep 1
   done
 }
 
