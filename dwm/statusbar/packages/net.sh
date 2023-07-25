@@ -29,53 +29,42 @@ case "$LANG" in
   ;;
 esac
 
-# 获取以太网
-get_en(){
+update() {
+  # 获取以太网网卡
   connection_method_en=$(nmcli | grep "$net_grep_keyword" | grep "en" | sed "s/$net_grep_keyword//" | awk -F "$net_delimiter" '{print $1}' | awk -F '' '{print $1$2}')
   net_text_en=$(nmcli | grep "$net_grep_keyword" | grep "en" | sed "s/$net_grep_keyword//" | awk -F "$net_delimiter" '{print $2}' | paste -d " " -s)
-  if [ "$connection_method_en" ]; then
-    en_context="$icon_color 󰈀 $text_color $net_text_en"
-    notify_icon_en="󰈀 $net_name"
-    net_all_context=("${net_all_context[@]}" "$en_context")
-  fi
-}
-
-# 获取wifi
-get_wl() {
+  # 获取 wifi 网卡
   connection_method_wl=$(nmcli | grep "$net_grep_keyword" | grep "wl" | sed "s/$net_grep_keyword//" | awk -F "$net_delimiter" '{print $1}' | awk -F '' '{print $1$2}')
   net_text_wl=$(nmcli | grep "$net_grep_keyword" | grep "wl" | sed "s/$net_grep_keyword//" | awk -F "$net_delimiter" '{print $2}' | paste -d " " -s)
-  if [ "$connection_method_wl" ]; then
-    wl_context="$icon_color 󰤨 $text_color $net_text_wl"
-    notify_icon_wl="󰤨  wifi"
-    net_all_context=("${net_all_context[@]}" "$wl_context")
+
+  if [ "$connection_method_en" ]; then
+    # 连接到以太网
+    net_icon="󰈀"
+    net_text=$net_text_en
+    connection_name=$net_name
+  elif [ "$connection_method_wl" ]; then
+    # 连接到 wifi
+    net_icon="󰤨"
+    net_text=$net_text_wl
+    connection_name="Wifi"
+  else
+    # 未连接状态 图标：web
+    net_icon="󰕑"
+    net_text=$net_disconnected
+    connection_name=$net_disconnected_notify
   fi
-}
 
-update() {
-  net_all_context=()
-  get_en
-  get_wl
-  text="${net_all_context[*]} "
 
-  net_text=$(nmcli | grep "$net_grep_keyword" | sed "s/$net_grep_keyword//" | awk -F "$net_delimiter" '{print $2}' | paste -d " " -s)
-  # 未连接状态 图标：web
-  [ "$net_text" = "" ] && text="$icon_color '󰕑' $text_color $net_disconnected "
+  icon=" $net_icon "
+  text=" $net_text "
 
   sed -i '/^export '$this'=.*$/d' "$temp_file"
-  printf "export %s='%s%s'\n" $this "$signal" "$text" >> "$temp_file"
+  printf "export %s='%s%s%s%s%s'\n" $this "$signal" "$icon_color" "$icon" "$text_color" "$text" >> "$temp_file"
 }
 
 notify() {
     update
-    if [ "$notify_icon_en" ]; then
-      dunstify -r 9526 "$notify_icon_en" "\n$net_text_en"
-    fi
-    if [ "$notify_icon_wl" ]; then
-      dunstify -r 9527 "$notify_icon_wl" "\n$net_text_wl"
-    fi
-    if [ ! "$notify_icon_en" ] && [ ! "$notify_icon_wl" ]; then
-      dunstify -r 9527 "󰕑" "$net_disconnected_notify"
-    fi
+    dunstify -r 9527 "$net_icon $connection_name" "\n$net_text"
 }
 
 call_net() {
