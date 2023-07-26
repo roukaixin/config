@@ -31,21 +31,21 @@ refresh() {
 icons_fun(){
   while true; do
     update icons
-    sleep 18000
+    sleep 43200
   done
 }
 
 bright_fun(){
   while true; do
     update bright
-    sleep 1
+    sleep 2
   done
 }
 
 net_fun(){
   while true; do
     update net
-    sleep 1
+    sleep 3
   done
 }
 
@@ -58,14 +58,14 @@ cpu_fun(){
 mem_fun(){
   while true; do
     update mem
-    sleep 1
+    sleep 2
   done
 }
 
 vol_fun(){
   while true; do
     update vol
-    sleep 1
+    sleep 2
   done
 }
 
@@ -79,7 +79,7 @@ date_fun(){
 bat_fun(){
   while true; do
     update bat
-    sleep 3
+    sleep 4
   done
 }
 
