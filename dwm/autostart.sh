@@ -6,6 +6,7 @@ daemons() {
   nm-applet &
   blueman-applet &
   /usr/lib/polkit-kde-authentication-agent-1 &
+  slstatus &
   picom -b
 }
 
