@@ -29,13 +29,13 @@
 # 中英文适配
 case "$LANG" in
   "zh_CN.UTF-8")
-  verif_text="身份验证"
+  verify_text="身份验证"
   wrong_text="验证失败"
   no_input_text="没有输入"
   date_format="%A, %Y年 %m月 %d日 "
   ;;
   "en_US.UTF-8")
-  verif_text="verifying…"
+  verify_text="verifying…"
   wrong_text="wrong!"
   no_input_text="no input"
   date_format="%A,  %m %Y "
@@ -63,7 +63,7 @@ i3lock \
     --wrong-align 0 \
     --wrong-color ffffffff \
     --wrong-text  "$wrong_text" \
-    --verif-text "$verif_text" \
+    --verif-text "$verify_text" \
     --verif-align 0 \
     --verif-color ffffffff \
     --modif-pos -50:-50
