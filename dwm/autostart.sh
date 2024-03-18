@@ -7,7 +7,9 @@ daemons() {
   blueman-applet &
   /usr/lib/polkit-kde-authentication-agent-1 &
   slstatus &
-  picom -b
+  picom &
+  dunst &
+  xss-lock -- bash ~/wm/config/lock/blurlock.sh &
 }
 
 cron() {
